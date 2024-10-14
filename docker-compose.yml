@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+    application:
+        image: my_image:latest
+        container_name: application
+        working_dir: /var/www
+        restart: always
+        tty: true
+        user: "www"
+        command: sh -c  "php artisan octane:start --server=swoole --host=0.0.0.0 --rpc-port=6001 --port=1550"
+        volumes:
+            - './:/var/www:rw'
+            - './docker/php/config/php.ini:/usr/local/etc/php/php.ini-development'
+            - './docker/php/config/php.ini:/usr/local/etc/php/php.ini-production'
+        networks:
+            - main
+        ports:
+            - "1550:1550"
+networks:
+    main:
+        driver: bridge
